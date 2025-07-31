@@ -13,6 +13,8 @@
 #include "n64graphics.h"
 #include "utils.h"
 
+#define PATH_MAX 255
+
 typedef struct {
     rgba *px;
     bool useless;
