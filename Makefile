@@ -873,7 +873,7 @@ $(BUILD_DIR)/%: %.png
 endif
 
 $(BUILD_DIR)/%.inc.c: $(BUILD_DIR)/% %.png
-	hexdump -v -e '1/1 "0x%X,"' $< > $@
+	./hexdump -e '1/1 "0x%X,"' $< > $@
 	echo >> $@
 
 ifeq ($(EXTERNAL_DATA),0)
@@ -935,12 +935,12 @@ $(SOUND_BIN_DIR)/%.o: $(SOUND_BIN_DIR)/%.s
 ifeq ($(EXTERNAL_DATA),1)
 
 $(SOUND_BIN_DIR)/%.inc.c: $(SOUND_BIN_DIR)/%
-	$(ZEROTERM) "$(patsubst $(BUILD_DIR)/%,%,$^)" | hexdump -v -e '1/1 "0x%X,"' > $@
+	$(ZEROTERM) "$(patsubst $(BUILD_DIR)/%,%,$^)" | ./hexdump -e '1/1 "0x%X,"' > $@
 
 else
 
 $(SOUND_BIN_DIR)/%.inc.c: $(SOUND_BIN_DIR)/%
-	hexdump -v -e '1/1 "0x%X,"' $< > $@
+	./hexdump -e '1/1 "0x%X,"' $< > $@
 	echo >> $@
 
 endif
