@@ -153,6 +153,7 @@ endif
 ifeq ($(IRIX_BUILD), 1)
   $(info ------ IRIX detected - Using Legacy GL ------)
   HEXDUMP := ./tools/irix/hexdump
+  RENDER_API := GL_LEGACY
   LEGACY_GL := 1
 else
   HEXDUMP := hexdump -v
