@@ -140,7 +140,7 @@ endif
 
 # Detect IRIX
 ifeq ($(HOST_OS),IRIX64)
-  echo "------ IRIX detected ------"
+  $(info ------ IRIX detected ------)
   HEXDUMP := ./tools/irix/hexdump
 else
   HEXDUMP := hexdump -v
