@@ -30,6 +30,9 @@ TARGET_WEB ?= 0
 # Makeflag to enable OSX fixes
 OSX_BUILD ?= 0
 
+# Makeflag to enable IRIX fixes
+IRIX_BUILD ?= 0
+
 # Enable -no-pie linker option
 NO_PIE ?= 1
 
@@ -139,9 +142,18 @@ ifneq ($(TARGET_BITS),0)
 endif
 
 # Detect IRIX
-ifeq ($(HOST_OS),IRIX64)
-  $(info ------ IRIX detected ------)
+ifeq ($(HOST_OS), IRIX)
+  IRIX_BUILD := 1
+endif
+
+ifeq ($(HOST_OS), IRIX64)
+  IRIX_BUILD :=	1
+endif
+
+ifeq ($(IRIX_BUILD), 1)
+  $(info ------ IRIX detected - Using Legacy GL ------)
   HEXDUMP := ./tools/irix/hexdump
+  LEGACY_GL := 1
 else
   HEXDUMP := hexdump -v
 endif
@@ -555,6 +567,9 @@ endif
 ifeq ($(SDL1_USED)$(SDL2_USED),11)
   $(error Cannot link both SDL1 and SDL2 at the same time)
 endif
+
+# IRIX SGUG-RSE GL linking
+BACKEND_LDFLAGS +=  -lGLcore /usr/lib32/libX11.so -Wl,--allow-shlib-undefined 
 
 # SDL can be used by different systems, so we consolidate all of that shit into this
 
