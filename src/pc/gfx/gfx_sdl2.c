@@ -19,7 +19,8 @@
 #ifdef OSX_BUILD
 #include <SDL2/SDL_opengl.h>
 #else
-#include <SDL2/SDL_opengles2.h>
+/* Include changed for IRIX SDL2-GL */
+#include <SDL2/SDL_opengles2_gl2platform.h>
 #endif
 
 #endif // End of OS-Specific GL defines
