@@ -570,7 +570,11 @@ ifeq ($(SDL1_USED)$(SDL2_USED),11)
 endif
 
 # IRIX SGUG-RSE GL linking
-BACKEND_LDFLAGS +=  -lGLcore /usr/lib32/libX11.so -Wl,--allow-shlib-undefined 
+ifeq ($(IRIX_BUILD), 1)
+  $(info --- Appending SGUG-RSE GL FLAGS ---)
+  BACKEND_CFLAGS += -I/usr/sgug/lib/gcc/mips-sgi-irix6.5/9/include -I/usr/include -I/usr/sgug/include
+  BACKEND_LDFLAGS +=  /usr/lib32/libX11.so.1 /usr/lib32/libXext.a -lGLcore /usr/lib32/libX11.so -Wl,--allow-shlib-undefined -Wl,-rpath-link=/usr/lib32 -Wl,-rpath=/usr/lib32:/usr/sgug/lib32
+endif
 
 # SDL can be used by different systems, so we consolidate all of that shit into this
 
