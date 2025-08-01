@@ -138,6 +138,14 @@ ifneq ($(TARGET_BITS),0)
   BITS := -m$(TARGET_BITS)
 endif
 
+# Detect IRIX
+ifeq ($(HOST_OS),IRIX64)
+  echo "------ IRIX detected ------"
+  HEXDUMP := ./tools/irix/hexdump
+else
+  HEXDUMP := hexdump -v
+endif
+
 # Release (version) flag defs
 
 ifeq ($(VERSION),jp)
@@ -873,7 +881,7 @@ $(BUILD_DIR)/%: %.png
 endif
 
 $(BUILD_DIR)/%.inc.c: $(BUILD_DIR)/% %.png
-	hexdump -v -e '1/1 "0x%X,"' $< > $@
+	$(HEXDUMP) -e '1/1 "0x%X,"' $< > $@
 	echo >> $@
 
 ifeq ($(EXTERNAL_DATA),0)
@@ -935,12 +943,12 @@ $(SOUND_BIN_DIR)/%.o: $(SOUND_BIN_DIR)/%.s
 ifeq ($(EXTERNAL_DATA),1)
 
 $(SOUND_BIN_DIR)/%.inc.c: $(SOUND_BIN_DIR)/%
-	$(ZEROTERM) "$(patsubst $(BUILD_DIR)/%,%,$^)" | hexdump -v -e '1/1 "0x%X,"' > $@
+	$(ZEROTERM) "$(patsubst $(BUILD_DIR)/%,%,$^)" | $(HEXDUMP) -e '1/1 "0x%X,"' > $@
 
 else
 
 $(SOUND_BIN_DIR)/%.inc.c: $(SOUND_BIN_DIR)/%
-	hexdump -v -e '1/1 "0x%X,"' $< > $@
+	$(HEXDUMP) -e '1/1 "0x%X,"' $< > $@
 	echo >> $@
 
 endif
