@@ -8,7 +8,6 @@
 /n64graphics_ci
 /patch_libultra_math
 /skyconv
-/tabledesign
 /textconv
 /vadpcm_enc
 !/ido5.3_compiler/lib/*.so
