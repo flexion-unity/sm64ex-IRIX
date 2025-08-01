@@ -15,7 +15,7 @@ typedef long SampleFormat;
 
 // The modern implementation of SGI's audiofile library which is in Ubuntu
 // (https://github.com/mpruett/audiofile/) has renamed some of the functions,
-// and changed some data types.
+// and changed some data types. 
 
 typedef int SampleFormat;
 #define AFopenfile afOpenFile
