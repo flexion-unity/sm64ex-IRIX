@@ -41,6 +41,7 @@
 
 # datadump
 /tools/ddump/*
+/tools/tabledesign
 
 # Text editor remnants
 *.swp

@@ -8,6 +8,13 @@
 #ifdef __sgi
 
 typedef long SampleFormat;
+#define AFopenfile afOpenFile
+#define AFgetchannels afGetChannels
+#define AFgettrackids afGetTrackIDs
+#define AFgetsampfmt afGetSampleFormat
+#define AFgetframecnt afGetFrameCount
+#define AFgetrate afGetRate
+#define AFreadframes afReadFrames
 
 #define MODE_READ "r"
 
@@ -18,13 +25,6 @@ typedef long SampleFormat;
 // and changed some data types. 
 
 typedef int SampleFormat;
-#define AFopenfile afOpenFile
-#define AFgetchannels afGetChannels
-#define AFgettrackids afGetTrackIDs
-#define AFgetsampfmt afGetSampleFormat
-#define AFgetframecnt afGetFrameCount
-#define AFgetrate afGetRate
-#define AFreadframes afReadFrames
 
 #define MODE_READ "rb"
 
