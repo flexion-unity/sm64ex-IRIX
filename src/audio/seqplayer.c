@@ -6,7 +6,7 @@
 #include "heap.h"
 #include "load.h"
 #include "seqplayer.h"
-
+#include <stdio.h>
 #define PORTAMENTO_IS_SPECIAL(x) ((x).mode & 0x80)
 #define PORTAMENTO_MODE(x) ((x).mode & ~0x80)
 #define PORTAMENTO_MODE_1 1
@@ -2006,6 +2006,7 @@ void process_sequences(UNUSED s32 iterationsRemaining) {
 }
 
 void init_sequence_player(u32 player) {
+    printf("init_sequence_player(%i)\n", player);
     struct SequencePlayer *seqPlayer = &gSequencePlayers[player];
 #ifdef VERSION_EU
     sequence_player_disable(seqPlayer);
@@ -2038,6 +2039,7 @@ void init_sequence_player(u32 player) {
 }
 
 void init_sequence_players(void) {
+    printf("init_sequence_players()\n");
     // Initialization function, called from audio_init
     s32 i, j;
 

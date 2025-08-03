@@ -744,7 +744,7 @@ struct AudioBank *load_banks_immediate(s32 seqId, u8 *arg1) {
     u32 bankId;
     u16 offset;
     u8 i;
-
+printf("  load_banks_immediate()\n");
 #ifdef VERSION_EU
     offset = ((u16 *) gAlBankSets)[seqId];
     for (i = gAlBankSets[offset++]; i != 0; i--) {
@@ -754,22 +754,27 @@ struct AudioBank *load_banks_immediate(s32 seqId, u8 *arg1) {
     for (i = gAlBankSets[offset - 1]; i != 0; i--) {
         offset++;
         bankId = gAlBankSets[offset - 1];
+        printf("  offset %i, bankId: %i\n", offset, bankId);
 #endif
 
         if (IS_BANK_LOAD_COMPLETE(bankId) == TRUE) {
+            printf(" IS_BANK_LOAD_COMPLETE(%i)\n", bankId);
 #ifdef VERSION_EU
             ret = get_bank_or_seq(&gBankLoadedPool, 2, bankId);
 #else
             ret = get_bank_or_seq(&gBankLoadedPool, 2, gAlBankSets[offset - 1]);
 #endif
         } else {
+            printf(" IS_BANK_LOAD_COMPLETE(%i) == FALSE\n", bankId);
             ret = NULL;
         }
 
         if (ret == NULL) {
+            printf(" ret calling bank_load_immediate(%i)\n", bankId);
             ret = bank_load_immediate(bankId, 2);
         }
     }
+    printf(" DONE with load_banks_immediate call\n");
     *arg1 = bankId;
     return ret;
 }
@@ -824,6 +829,7 @@ printf("-> load_sequence_internal(%i, %i, %i)\n", player, seqId, loadAsync);
     if (seqId >= gSequenceCount) {
         return;
     }
+    if (player == SEQ_PLAYER_SFX) printf(" -- LOADING SEQ_PLAYER_SFX -- gSequenceCount: %i\n", gSequenceCount);
 
     sequence_player_disable(seqPlayer);
     if (loadAsync) {
@@ -842,9 +848,10 @@ printf("-> load_sequence_internal(%i, %i, %i)\n", player, seqId, loadAsync);
             return;
         }
     } else if (load_banks_immediate(seqId, &seqPlayer->defaultBank[0]) == NULL) {
+        printf(" !!!! load_banks_immediate returned NULL !!!\n");
         return;
     }
-
+    printf("  load_banks_immediate DONE\n");
     seqPlayer->seqId = seqId;
     sequenceData = get_bank_or_seq(&gSeqLoadedPool, 2, seqId);
     if (sequenceData == NULL) {
@@ -869,7 +876,9 @@ printf("-> load_sequence_internal(%i, %i, %i)\n", player, seqId, loadAsync);
     seqPlayer->enabled = TRUE;
     seqPlayer->seqData = sequenceData;
     seqPlayer->scriptState.pc = sequenceData;
- printf("  DONE\n");
+    printf("  seqPlayer enabled: %i\n", seqPlayer->enabled);
+    printf("  seqPlayer->seqData: %i %i %i %i\n", seqPlayer->seqData[0], seqPlayer->seqData[1], seqPlayer->seqData[3], seqPlayer->seqData[4]);
+    printf("  DONE\n");
 }
 
 #ifdef EXTERNAL_DATA

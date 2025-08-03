@@ -1,5 +1,5 @@
 #include <ultra64.h>
-
+#include <stdio.h>
 #include "heap.h"
 #include "data.h"
 #include "load.h"
@@ -513,7 +513,7 @@ void *get_bank_or_seq(struct SoundMultiPool *arg0, s32 arg1, s32 id) {
     u32 i;
     UNUSED void *ret;
     struct TemporaryPool *temporary = &arg0->temporary;
-
+    printf("   get_bank_or_seq(arg1: %i, id: %i)\n", arg1, id);
     if (arg1 == 0) {
         // Try not to overwrite sound that we have just accessed, by setting nextSide appropriately.
         if (temporary->entries[0].id == id) {
