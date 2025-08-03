@@ -806,7 +806,7 @@ void process_sound_request(u32 bits, f32 *pos) {
 
     index = gSoundBanks[bankIndex][0].next;
 
-    printf("bankIndex: %i, soundId: %i, index: %i\n", bankIndex, soundId, index);
+    printf(" bankIndex: %i, soundId: %i, index: %i\n", bankIndex, soundId, index);
     
     while (index != 0xff && index != 0) {
         if (gSoundBanks[bankIndex][index].x == pos) {
@@ -1202,6 +1202,7 @@ void update_game_sound(void) {
     process_all_sound_requests();
     process_level_music_dynamics();
     if (gSequencePlayers[SEQ_PLAYER_SFX].channels[0] == &gSequenceChannelNone) {
+	 printf("---  external.c update_game_sound() SFX Playback Stopped!!\n   gSequencePlayers[SEQ_PLAYER_SFX].channels[0] is gSequenceChannelNone --- \n");
         return;
     }
 
@@ -1209,11 +1210,13 @@ void update_game_sound(void) {
         func_8031E16C(bankIndex);
         for (j = 0; j < MAX_CHANNELS_PER_SOUND; j++) {
             index = sCurrentSound[bankIndex][j];
+	printf("gSoundBanks[bankIndex][index].soundStatus = %i\n", gSoundBanks[bankIndex][index].soundStatus);
             if (index < 0xff && gSoundBanks[bankIndex][index].soundStatus != SOUND_STATUS_STOPPED) {
                 soundStatus = gSoundBanks[bankIndex][index].soundBits & SOUNDARGS_MASK_STATUS;
                 soundId = (gSoundBanks[bankIndex][index].soundBits >> SOUNDARGS_SHIFT_SOUNDID);
                 gSoundBanks[bankIndex][index].soundStatus = soundStatus;
                 if (soundStatus == SOUND_STATUS_STARTING) {
+		   printf(" >>>> bank[%i] sound starting\n", bankIndex);
                     if (gSoundBanks[bankIndex][index].soundBits & SOUND_LO_BITFLAG_UNK1) {
                         D_80332110 |= 1 << bankIndex;
                         func_803200E4(50);

@@ -5,7 +5,7 @@
 #include "heap.h"
 #include "load.h"
 #include "seqplayer.h"
-
+#include <stdio.h>
 #include "pc/platform.h"
 #include "pc/fs/fs.h"
 
@@ -820,7 +820,7 @@ void load_sequence_internal(u32 player, u32 seqId, s32 loadAsync) {
     void *sequenceData;
     struct SequencePlayer *seqPlayer = &gSequencePlayers[player];
     UNUSED u32 padding[2];
-
+printf("-> load_sequence_internal(%i, %i, %i)\n", player, seqId, loadAsync);
     if (seqId >= gSequenceCount) {
         return;
     }
@@ -869,6 +869,7 @@ void load_sequence_internal(u32 player, u32 seqId, s32 loadAsync) {
     seqPlayer->enabled = TRUE;
     seqPlayer->seqData = sequenceData;
     seqPlayer->scriptState.pc = sequenceData;
+ printf("  DONE\n");
 }
 
 #ifdef EXTERNAL_DATA

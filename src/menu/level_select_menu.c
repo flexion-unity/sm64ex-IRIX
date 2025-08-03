@@ -13,6 +13,7 @@
 #include "level_table.h"
 #include "seq_ids.h"
 #include "sm64.h"
+#include <stdio.h>
 
 #define PRESS_START_DEMO_TIMER 800
 
@@ -163,6 +164,7 @@ int intro_default(void) {
 
 #ifndef VERSION_JP
     if (D_U_801A7C34 == 1) {
+	printf("[SFX] hellooo\n");
         play_sound(SOUND_MARIO_HELLO, gDefaultSoundArgs);
         D_U_801A7C34 = 0;
     }
@@ -192,6 +194,7 @@ int intro_game_over(void) {
     print_intro_text();
 
     if (gPlayer1Controller->buttonPressed & START_BUTTON) {
+	printf("[SFX] SOUND_MENU_STAR_SOUND\n");
         play_sound(SOUND_MENU_STAR_SOUND, gDefaultSoundArgs);
         sp1C = 100 + gDebugLevelSelect;
 #ifndef VERSION_JP
@@ -203,6 +206,7 @@ int intro_game_over(void) {
 
 int intro_play_its_a_me_mario(void) {
     set_background_music(0, SEQ_SOUND_PLAYER, 0);
+	printf("[SFX] SOUND_MENU_COIN_ITS_A_ME_MARIO\n");
     play_sound(SOUND_MENU_COIN_ITS_A_ME_MARIO, gDefaultSoundArgs);
     return 1;
 }
