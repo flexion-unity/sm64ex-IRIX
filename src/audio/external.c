@@ -13,6 +13,7 @@
 #include "seq_ids.h"
 #include "dialog_ids.h"
 #include "level_table.h"
+#include <stdio.h>
 
 #ifdef VERSION_EU
 #define EU_FLOAT(x) x ## f
@@ -782,12 +783,14 @@ void create_next_audio_buffer(s16 *samples, u32 num_samples) {
 #endif
 
 void play_sound(s32 soundBits, f32 *pos) {
+    printf("play_sound (queueing pos: %f, soundBits: %i)\n", *pos, soundBits);
     sSoundRequests[sSoundRequestCount].soundBits = soundBits;
     sSoundRequests[sSoundRequestCount].position = pos;
     sSoundRequestCount++;
 }
 
 void process_sound_request(u32 bits, f32 *pos) {
+    printf("process_sound_request (pos: %f, soundBits: %i)\n", *pos, bits);
     u8 bankIndex;
     u8 index;
     u8 counter = 0;
@@ -802,6 +805,9 @@ void process_sound_request(u32 bits, f32 *pos) {
     }
 
     index = gSoundBanks[bankIndex][0].next;
+
+    printf("bankIndex: %i, soundId: %i, index: %i\n", bankIndex, soundId, index);
+    
     while (index != 0xff && index != 0) {
         if (gSoundBanks[bankIndex][index].x == pos) {
             if ((gSoundBanks[bankIndex][index].soundBits & SOUNDARGS_MASK_PRIORITY)
