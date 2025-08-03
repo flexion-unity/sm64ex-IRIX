@@ -1208,6 +1208,9 @@ void update_game_sound(void) {
 
     process_all_sound_requests();
     process_level_music_dynamics();
+
+ printf("gSequencePlayers[SEQ_PLAYER_SFX].enabled %i, tempo: %i\n",gSequencePlayers[SEQ_PLAYER_SFX].enabled, gSequencePlayers[SEQ_PLAYER_SFX].tempo );
+
     if (gSequencePlayers[SEQ_PLAYER_SFX].channels[0] == &gSequenceChannelNone) {
 	 printf("---  external.c update_game_sound() SFX Playback Stopped!!\n   gSequencePlayers[SEQ_PLAYER_SFX].channels[0] is gSequenceChannelNone --- \n");
         return;
