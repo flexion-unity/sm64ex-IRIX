@@ -809,12 +809,16 @@ void process_sound_request(u32 bits, f32 *pos) {
     printf(" bankIndex: %i, soundId: %i, index: %i\n", bankIndex, soundId, index);
     
     while (index != 0xff && index != 0) {
+        printf(" while..\n"); 
         if (gSoundBanks[bankIndex][index].x == pos) {
+            printf("  A \n"); 
             if ((gSoundBanks[bankIndex][index].soundBits & SOUNDARGS_MASK_PRIORITY)
                 <= (bits & SOUNDARGS_MASK_PRIORITY)) {
+                    printf("  B \n"); 
                 if ((gSoundBanks[bankIndex][index].soundBits & SOUND_LO_BITFLAG_UNK8) != 0
                     || (bits & SOUNDARGS_MASK_SOUNDID)
                            != (gSoundBanks[bankIndex][index].soundBits & SOUNDARGS_MASK_SOUNDID)) {
+                    printf(" func_8031E0E4..\n"); 
                     func_8031E0E4(bankIndex, index);
                     gSoundBanks[bankIndex][index].soundBits = bits;
                     gSoundBanks[bankIndex][index].soundStatus = bits & SOUNDARGS_MASK_STATUS;
@@ -827,6 +831,7 @@ void process_sound_request(u32 bits, f32 *pos) {
         }
         counter++;
     }
+    printf(" END OF while..\n");
 
     if (counter == 0) {
         D_80363808[bankIndex] = 32;
@@ -848,6 +853,8 @@ void process_sound_request(u32 bits, f32 *pos) {
         D_803320B0[bankIndex] = gSoundBanks[bankIndex][D_803320B0[bankIndex]].next;
         gSoundBanks[bankIndex][D_803320B0[bankIndex]].prev = 0xff;
         gSoundBanks[bankIndex][index].next = 0xff;
+        printf(" gSoundBanks[%i] ......... dist: %f\n", bankIndex, dist);
+        printf(" gSoundBanks[%i] ......... soundBits: %i\n", bankIndex, bits);
     }
 }
 
@@ -1210,7 +1217,6 @@ void update_game_sound(void) {
         func_8031E16C(bankIndex);
         for (j = 0; j < MAX_CHANNELS_PER_SOUND; j++) {
             index = sCurrentSound[bankIndex][j];
-	printf("gSoundBanks[bankIndex][index].soundStatus = %i\n", gSoundBanks[bankIndex][index].soundStatus);
             if (index < 0xff && gSoundBanks[bankIndex][index].soundStatus != SOUND_STATUS_STOPPED) {
                 soundStatus = gSoundBanks[bankIndex][index].soundBits & SOUNDARGS_MASK_STATUS;
                 soundId = (gSoundBanks[bankIndex][index].soundBits >> SOUNDARGS_SHIFT_SOUNDID);
