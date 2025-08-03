@@ -15,16 +15,8 @@ static bool audio_sdl_init(void) {
     SDL_AudioSpec want, have;
     SDL_zero(want);
     want.freq = 32000;
-#ifdef __sgi
-printf("--- audio_sdl_init() Set SDL2 settings for SGI ---"\n);
-    want.format = AUDIO_S16MSB;
-    want.samples = 512;
-    // want.samples = 4096; // larger value for our old MIPS machines
-#else
     want.format = AUDIO_S16SYS;
     want.samples = 512;
-#endif
-    
     want.channels = 2;
     want.callback = NULL;
     dev = SDL_OpenAudioDevice(NULL, 0, &want, &have, 0);
