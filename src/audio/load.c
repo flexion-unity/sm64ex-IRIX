@@ -649,12 +649,21 @@ void *sequence_dma_immediate(s32 seqId, s32 arg1) {
     s32 seqLength;
     void *ptr;
     u8 *seqData;
-
+    int i;
     seqLength = gSeqFileHeader->seqArray[seqId].len + 0xf;
+    printf("\n---- sequence_dma_immediate(%i, %i) seqLength: %i ", seqId, arg1, seqLength);
     seqLength = ALIGN16(seqLength);
+    printf("ALIGNED: %i \n", seqLength);
     seqData = gSeqFileHeader->seqArray[seqId].offset;
+    printf(" > seqData: ");
+    for (i = 0; i < 16; i++) {
+        printf("%i, ", seqData[i]);
+    }
+    printf("\n");
+
     ptr = alloc_bank_or_seq(&gSeqLoadedPool, 1, seqLength, arg1, seqId);
     if (ptr == NULL) {
+        printf(" !!!! ptr is NULL !!!!\n");
         return NULL;
     }
 
@@ -744,7 +753,7 @@ struct AudioBank *load_banks_immediate(s32 seqId, u8 *arg1) {
     u32 bankId;
     u16 offset;
     u8 i;
-printf("  load_banks_immediate()\n");
+// printf("load_banks_immediate()\n");
 #ifdef VERSION_EU
     offset = ((u16 *) gAlBankSets)[seqId];
     for (i = gAlBankSets[offset++]; i != 0; i--) {
@@ -754,23 +763,23 @@ printf("  load_banks_immediate()\n");
     for (i = gAlBankSets[offset - 1]; i != 0; i--) {
         offset++;
         bankId = gAlBankSets[offset - 1];
-        printf("  offset %i, bankId: %i\n", offset, bankId);
+        // printf("  offset %i, bankId: %i\n", offset, bankId);
 #endif
 
         if (IS_BANK_LOAD_COMPLETE(bankId) == TRUE) {
-            printf(" IS_BANK_LOAD_COMPLETE(%i)\n", bankId);
+            // printf(" IS_BANK_LOAD_COMPLETE(%i)\n", bankId);
 #ifdef VERSION_EU
             ret = get_bank_or_seq(&gBankLoadedPool, 2, bankId);
 #else
             ret = get_bank_or_seq(&gBankLoadedPool, 2, gAlBankSets[offset - 1]);
 #endif
         } else {
-            printf(" IS_BANK_LOAD_COMPLETE(%i) == FALSE\n", bankId);
+            // printf(" IS_BANK_LOAD_COMPLETE(%i) == FALSE\n", bankId);
             ret = NULL;
         }
 
         if (ret == NULL) {
-            printf(" ret calling bank_load_immediate(%i)\n", bankId);
+            //printf(" ret calling bank_load_immediate(%i)\n", bankId);
             ret = bank_load_immediate(bankId, 2);
         }
     }
@@ -825,7 +834,8 @@ void load_sequence_internal(u32 player, u32 seqId, s32 loadAsync) {
     void *sequenceData;
     struct SequencePlayer *seqPlayer = &gSequencePlayers[player];
     UNUSED u32 padding[2];
-printf("-> load_sequence_internal(%i, %i, %i)\n", player, seqId, loadAsync);
+    int i;
+printf("\n-> load_sequence_internal(%i, %i, %i)\n", player, seqId, loadAsync);
     if (seqId >= gSequenceCount) {
         return;
     }
@@ -877,8 +887,12 @@ printf("-> load_sequence_internal(%i, %i, %i)\n", player, seqId, loadAsync);
     seqPlayer->seqData = sequenceData;
     seqPlayer->scriptState.pc = sequenceData;
     printf("  seqPlayer enabled: %i\n", seqPlayer->enabled);
-    printf("  seqPlayer->seqData: %i %i %i %i\n", seqPlayer->seqData[0], seqPlayer->seqData[1], seqPlayer->seqData[3], seqPlayer->seqData[4]);
-    printf("  DONE\n");
+ //   printf("  seqPlayer->seqData: %i %i %i %i\n", seqPlayer->seqData[0], seqPlayer->seqData[1], seqPlayer->seqData[2], seqPlayer->seqData[3]);
+    printf(" > seqPlayer.->scriptState.pc++: ");
+    for (i = 0; i < 16; i++) {
+        printf("%i, ", seqPlayer->scriptState.pc[i]);
+    }
+    printf("\n DONE");
 }
 
 #ifdef EXTERNAL_DATA
