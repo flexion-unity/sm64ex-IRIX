@@ -21,7 +21,7 @@
 #define HUD_LUT_GLOBAL 2
 
 // For file select JP HUD difference
-#ifdef VERSION_JP
+#if defined(VERSION_US) || defined(VERSION_SH)
 #define HUD_LUT_DIFF HUD_LUT_JPMENU
 #else
 #define HUD_LUT_DIFF HUD_LUT_GLOBAL
