@@ -651,4 +651,3 @@
 .macro sound_ref a
     i16_be (\a - sequence_start)
 .endm
-
