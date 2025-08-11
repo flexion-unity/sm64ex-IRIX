@@ -2046,7 +2046,7 @@ void print_peach_letter_message(void) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 #endif
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
-#ifndef VERSION_JP
+#if !defined(VERSION_JP) && !defined(VERSION_SH)
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
     gDPSetEnvColor(gDisplayListHead++, 200, 80, 120, gCutsceneMsgFade);
     gSPDisplayList(gDisplayListHead++, castle_grounds_seg7_us_dl_0700F2E8);
@@ -2283,11 +2283,11 @@ void render_pause_my_score_coins(void) {
             print_generic_string(TXT_STAR_X, 140, textUnfilledStar);
         }
         print_generic_string(ACT_NAME_X, 140, actName);
-#ifndef VERSION_JP
+#if !defined(VERSION_JP) && !defined(VERSION_SH)
         print_generic_string(LVL_NAME_X, 157, &courseName[3]);
 #endif
     }
-#ifndef VERSION_JP
+#if !defined(VERSION_JP) && !defined(VERSION_SH)
     else {
 #ifdef VERSION_US
         print_generic_string(94, 157, &courseName[3]);
